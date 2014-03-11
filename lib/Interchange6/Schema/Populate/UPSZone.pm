@@ -85,7 +85,6 @@ sub records2 {
 
     foreach my $weight (@array) {
         my ($price, undef, undef) = getUPS($product_code, $home, $postal_range_start, $weight);
-        print "test $product_code, $home, $postal_range_start, $weight";
         push @rates, {'shipment_carrier_zones_id' => $zone_id, 'weight' => $weight, 'price' => $price};
     }
     return \@rates;
