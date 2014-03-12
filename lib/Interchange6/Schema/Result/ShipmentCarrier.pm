@@ -33,6 +33,13 @@ __PACKAGE__->table("shipment_carriers");
   is_nullable: 0
   size: 255
 
+=head2 title
+
+  data_type: 'varchar'
+  default_value: (empty string)
+  is_nullable: 0
+  size: 255
+
 =head2 account_number
 
   data_type: 'varchar'
@@ -50,6 +57,8 @@ __PACKAGE__->add_columns(
     is_nullable => 0,
   },
   "name",
+  { data_type => "varchar", default_value => "", is_nullable => 0, size => 255 },
+  "title",
   { data_type => "varchar", default_value => "", is_nullable => 0, size => 255 },
   "account_number",
   { data_type => "varchar", default_value => "", is_nullable => 0, size => 255 },
