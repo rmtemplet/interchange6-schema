@@ -1,9 +1,9 @@
 use utf8;
-package Interchange6::Schema::Result::ShipmentCarrierRate;
+package Interchange6::Schema::Result::ShipmentRate;
 
 =head1 NAME
 
-Interchange6::Schema::Result::ShipmentCarrierRate;
+Interchange6::Schema::Result::ShipmentRate;
 
 =cut
 
@@ -14,21 +14,21 @@ use base 'DBIx::Class::Core';
 
 __PACKAGE__->load_components(qw(InflateColumn::DateTime TimeStamp));
 
-=head1 TABLE: C<shipment_carrier_rates>
+=head1 TABLE: C<shipment_rates>
 
 =cut
 
-__PACKAGE__->table("shipment_carrier_rates");
+__PACKAGE__->table("shipment_rates");
 
 =head1 ACCESSORS
 
-=head2 shipment_carrier_rates_id
+=head2 shipment_rates_id
 
   data_type: 'integer'
   is_auto_increment: 1
   is_nullable: 0
 
-=head shipment_carrier_zones_id 
+=head2 shipment_zones_id 
 
   type: 'integer'
   is_foreign_key: 1
@@ -64,13 +64,13 @@ __PACKAGE__->table("shipment_carrier_rates");
 =cut
 
 __PACKAGE__->add_columns(
-  "shipment_carrier_rates_id",
+  "shipment_rates_id",
   {
     data_type => "integer",
     is_auto_increment => 1,
     is_nullable => 0,
   },
-  "shipment_carrier_zones_id",
+  "shipment_zones_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "weight",
   { data_type => "numeric", default_value => "0.0", is_nullable => 0, size => [10, 2] },
@@ -91,28 +91,28 @@ __PACKAGE__->add_columns(
 
 =over 4
 
-=item * L</shipment_carrier_zones_id>
+=item * L</shipment_rates_id>
 
 =back
 
 =cut
 
-__PACKAGE__->set_primary_key("shipment_carrier_rates_id");
+__PACKAGE__->set_primary_key("shipment_rates_id");
 
 =head1 RELATIONS
 
-=head2 ShipmentCarrierZone
+=head2 ShipmentZone
 
 Type: belongs_to
 
-Related object: L<Interchange6::Schema::Result::ShipmentCarrierZone>
+Related object: L<Interchange6::Schema::Result::ShipmentZone>
 
 =cut
 
 __PACKAGE__->belongs_to(
-  "ShipmentCarrierZone",
-  "Interchange6::Schema::Result::ShipmentCarrierZone",
-  { shipment_carrier_zones_id => "shipment_carrier_zones_id" },
+  "ShipmentZone",
+  "Interchange6::Schema::Result::ShipmentZone",
+  { shipment_zones_id => "shipment_zones_id" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 

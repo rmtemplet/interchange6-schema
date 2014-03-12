@@ -1,9 +1,9 @@
 use utf8;
-package Interchange6::Schema::Result::ShipmentCarrierZone;
+package Interchange6::Schema::Result::ShipmentZone;
 
 =head1 NAME
 
-Interchange6::Schema::Result::ShipmentCarrierZone;
+Interchange6::Schema::Result::ShipmentZone;
 
 =cut
 
@@ -14,15 +14,15 @@ use base 'DBIx::Class::Core';
 
 __PACKAGE__->load_components(qw(InflateColumn::DateTime TimeStamp));
 
-=head1 TABLE: C<shipment_carrier_zones>
+=head1 TABLE: C<shipment_zones>
 
 =cut
 
-__PACKAGE__->table("shipment_carrier_zones");
+__PACKAGE__->table("shipment_zones");
 
 =head1 ACCESSORS
 
-=head2 shipment_carrier_zones_id
+=head2 shipment_zones_id
 
   data_type: 'integer'
   is_auto_increment: 1
@@ -40,46 +40,32 @@ __PACKAGE__->table("shipment_carrier_zones");
   is_foreign_key: 1
   is_nullable: 1
 
-=head shipment_methods_id
+=head2 shipment_methods_id
 
   type: 'integer'
   is_foreign_key: 1
   is_nullable: 0
 
-=head postal_range_start
+=head2 postal_range_start
 
   data_type: 'varchar'
   default_value: (empty string)
   is_nullable: 0
   size: 255
 
-=head postal_range_end
+=head2 postal_range_end
 
   data_type: 'varchar'
   default_value: (empty string)
   is_nullable: 0
   size: 255
 
-=head zone 
+=head2 zone 
 
   data_type: 'varchar'
   default_value: (empty string)
   is_nullable: 1
   size: 255
-
-=head value
-
-  data_type: 'varchar'
-  default_value: (empty string)
-  is_nullable: 0
-  size: 255
-
-=head2 weight
-
-  data_type: 'numeric'
-  default_value: 0.0
-  is_nullable: 0
-  size: [10,2]
 
 =head2 created
 
@@ -97,7 +83,7 @@ __PACKAGE__->table("shipment_carrier_zones");
 =cut
 
 __PACKAGE__->add_columns(
-  "shipment_carrier_zones_id",
+  "shipment_zones_id",
   {
     data_type => "integer",
     is_auto_increment => 1,
@@ -125,13 +111,13 @@ __PACKAGE__->add_columns(
 
 =over 4
 
-=item * L</shipment_carrier_zones_id>
+=item * L</shipment_zones_id>
 
 =back
 
 =cut
 
-__PACKAGE__->set_primary_key("shipment_carrier_zones_id");
+__PACKAGE__->set_primary_key("shipment_zones_id");
 
 =head1 RELATIONS
 
