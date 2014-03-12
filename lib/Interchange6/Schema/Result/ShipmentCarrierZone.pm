@@ -113,10 +113,6 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", default_value => "", is_nullable => 0, size => 255 },
   "zone",
   { data_type => "varchar", default_value => "", is_nullable => 1, size => 255 },
-  "value",
-  { data_type => "varchar", default_value => "", is_nullable => 0, size => 255 },
-  "weight",
-  { data_type => "numeric", default_value => "0.0", is_nullable => 0, size => [10, 2] },
   "created",
   { data_type => "datetime", set_on_create => 1, is_nullable => 0 },
   "last_modified",
@@ -181,4 +177,6 @@ __PACKAGE__->belongs_to(
   { shipment_methods_id => "shipment_methods_id" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
+
+
 1;
