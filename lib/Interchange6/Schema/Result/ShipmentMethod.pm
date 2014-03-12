@@ -40,6 +40,13 @@ __PACKAGE__->table("shipment_methods");
   is_nullable: 0
   size: 255
 
+=head2 min_weight
+
+  data_type: 'numeric'
+  default_value: 0.0
+  is_nullable: 0
+  size: [10,2]
+
 =head2 max_weight
 
   data_type: 'numeric'
@@ -72,6 +79,8 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", default_value => "", is_nullable => 0, size => 255 },
   "title",
   { data_type => "varchar", default_value => "", is_nullable => 0, size => 255 },
+  "min_weight",
+  { data_type => "numeric", default_value => "0.0", is_nullable => 0 },
   "max_weight",
   { data_type => "numeric", default_value => "0.0", is_nullable => 0 },
   "shipment_carriers_id",
