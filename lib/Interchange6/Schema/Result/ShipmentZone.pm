@@ -30,7 +30,7 @@ __PACKAGE__->table("shipment_zones");
 
 =head2 country_iso_code
 
-  data_type: 'varchar'
+  data_type: 'char'
   is_foreign_key: 1
   is_nullable: 1
 
@@ -90,9 +90,9 @@ __PACKAGE__->add_columns(
     is_nullable => 0,
   },
   "country_iso_code",
-  { data_type => "varchar", is_foreign_key => 1, is_nullable => 1 },
+  { data_type => "char", is_foreign_key => 1, is_nullable => 1 },
   "state_id",
-  { data_type => "varchar", is_foreign_key => 1, is_nullable => 1 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "shipment_methods_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "postal_range_start",
@@ -160,7 +160,7 @@ Related object: L<Interchange6::Schema::Result::ShipmentMethod>
 =cut
 
 __PACKAGE__->belongs_to(
-  "State",
+  "ShipmentMethod",
   "Interchange6::Schema::Result::ShipmentMethod",
   { shipment_methods_id => "shipment_methods_id" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
