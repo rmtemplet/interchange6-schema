@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 use Data::Dumper;
-use Test::More tests => 31;
+use Test::More tests => 32;
 
 use Try::Tiny;
 use Interchange6::Schema;
@@ -94,6 +94,7 @@ ok($user->id == 1, "Testing user id.")
 my $pwd = $user->password;
 
 ok($pwd ne 'nevairbe', 'Test password encryption');
+like($pwd, qr/^\$2a\$14\$.{53}$/, "Check password hash has correct format");
 
 # check that username is unique
 my $dup_error;
