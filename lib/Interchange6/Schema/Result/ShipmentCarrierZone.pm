@@ -12,6 +12,8 @@ use warnings;
 
 use base 'DBIx::Class::Core';
 
+__PACKAGE__->load_components(qw(InflateColumn::DateTime TimeStamp));
+
 =head1 TABLE: C<shipment_carrier_zones>
 
 =cut
