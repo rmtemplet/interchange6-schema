@@ -26,13 +26,6 @@ __PACKAGE__->table("shipment_methods");
   is_auto_increment: 1
   is_nullable: 0
 
-=head2 code
-
-  data_type: 'varchar'
-  default_value: (empty string)
-  is_nullable: 0
-  size: 255
-
 =head2 name
 
   data_type: 'varchar'
@@ -40,11 +33,19 @@ __PACKAGE__->table("shipment_methods");
   is_nullable: 0
   size: 255
 
-=head2 type
+=head2 title
+
+  data_type: 'varchar'
+  default_value: (empty string)
+  is_nullable: 0
+  size: 255
+
+=head2 max_weight
 
   data_type: 'numeric'
   default_value: 0.0
   is_nullable: 0
+  size: [10,2]
 
 =head2 shipment_carriers_id
 
@@ -61,9 +62,9 @@ __PACKAGE__->add_columns(
     is_auto_increment => 1,
     is_nullable => 0,
   },
-  "code",
-  { data_type => "varchar", default_value => "", is_nullable => 0, size => 255 },
   "name",
+  { data_type => "varchar", default_value => "", is_nullable => 0, size => 255 },
+  "title",
   { data_type => "varchar", default_value => "", is_nullable => 0, size => 255 },
   "max_weight",
   { data_type => "numeric", default_value => "0.0", is_nullable => 0 },
