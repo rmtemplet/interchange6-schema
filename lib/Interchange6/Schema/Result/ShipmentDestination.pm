@@ -32,7 +32,7 @@ __PACKAGE__->table("shipment_destinations");
   is_foreign_key: 1
   is_nullable: 1
 
-=head2 state_id
+=head2 states_id
 
   data_type: 'integer'
   is_foreign_key: 1
@@ -61,7 +61,7 @@ __PACKAGE__->add_columns(
   },
   "country_iso_code",
   { data_type => "varchar", is_foreign_key => 1, is_nullable => 1 },
-  "state_id",
+  "states_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "shipment_methods_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
@@ -109,7 +109,7 @@ Related object: L<Interchange6::Schema::Result::State>
 __PACKAGE__->belongs_to(
   "State",
   "Interchange6::Schema::Result::State",
-  { state_id => "state_id" },
+  { states_id => "states_id" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
