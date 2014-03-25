@@ -20,6 +20,12 @@ __PACKAGE__->load_components(qw(InflateColumn::DateTime TimeStamp));
 
 __PACKAGE__->table("rules");
 
+=head1 DESCRIPTION
+
+The rules table contains parameters for various rule types. 
+
+=cut
+
 =head1 ACCESSORS
 
 =head2 rules_id
@@ -35,40 +41,40 @@ __PACKAGE__->table("rules");
   is_nullable: 0
   size: 255
 
-=head2 valid_from
+=head2 title
 
-  data_type: 'date'
-  set_on_create: 1
+  data_type: 'varchar'
+  default_value: (empty string)
   is_nullable: 0
 
-=head2 valid_to
+=head2 description
 
-  data_type: 'date'
+  data_type: 'text'
+  default_value: (empty string)
+  is_nullable: 0
+
+=head2 canonical_rules_id
+
+  This field contains the rules_id of the master rule for which it is 
+  dependent. If the field is blank it is assumed to be a master rule.
+
+  data_type: 'varchar'
   is_nullable: 1
+  size: 64
 
-=head2 priority
+=head2 strict
 
-  data_type: 'integer'
-  default_value: 0
+  If the master rule is flagged strict no other attributes can be created
+  for this rule only attribute_values.
+
+  data_type: 'boolean'
+  default_value: true
   is_nullable: 0
 
 =head2 active
 
   data_type: 'boolean'
   default_value: true
-  is_nullable: 0
-
-=head2 created
-
-  data_type: 'datetime'
-  set_on_create: 1
-  is_nullable: 0
-
-=head2 last_modified
-
-  data_type: 'datetime'
-  set_on_create: 1
-  set_on_update: 1
   is_nullable: 0
 
 =cut
@@ -82,16 +88,16 @@ __PACKAGE__->add_columns(
   },
   "name",
   { data_type => "varchar", default_value => "", is_nullable => 0, size => 255 },
-  "valid_from",
-  { data_type => "date", set_on_create => 1, is_nullable => 0 },
-  "valid_to",
-  { data_type => "date", is_nullable => 1 },
+  "title",
+  { data_type => "varchar", default_value => "", is_nullable => 0 },
+  "description",
+  { data_type => "text", default_value => "", is_nullable => 0 },
+  "canonical_rules_id",
+  { data_type => "varchar", is_nullable => 1, size => 64 },
+  "strict",
+  { data_type => "boolean", default_value => \"true", is_nullable => 0 },
   "active",
   { data_type => "boolean", default_value => \"true", is_nullable => 0 },
-  "created",
-  { data_type => "datetime", set_on_create => 1, is_nullable => 0 },
-  "last_modified",
-  { data_type => "datetime", set_on_create => 1, set_on_update => 1, is_nullable => 0 },
 );
 
 =head1 PRIMARY KEY
