@@ -7,15 +7,14 @@ use Try::Tiny;
 use DBICx::TestDatabase;
 use Interchange6::Schema;
 
-my $count;
-my %navigation;
-my %product;
-my %size;
+my $now = time();
 
 my $schema = DBICx::TestDatabase->new('Interchange6::Schema');
 
+my %cart;
 my %carrier;
 my %rule;
+my %destination;
 
 $destination{US} = $schema->resultset("ShipmentDestination")->populate([
     { country_iso_code => 'US', shipment_methods_id =>'1' },
@@ -34,7 +33,9 @@ $carrier{UPS} = $schema->resultset("ShipmentCarrier")->create(
     }
 );
 
-$rule{specs} = $schema->resultset("Rule")->create(
+my $rule_rs = $schema->resultset('Rule');
+
+$rule{1} = $rule_rs->create(
     {
         rules_id =>'1',
         name => 'action',
@@ -42,6 +43,9 @@ $rule{specs} = $schema->resultset("Rule")->create(
         description => 'This master rule begins an action',
         strict => '1',
     },
+);
+
+$rule{2} = $rule_rs->create(
     {
         rules_id =>'2',
         name => 'Action Discount 100 percent',
@@ -49,20 +53,27 @@ $rule{specs} = $schema->resultset("Rule")->create(
         canonical_rules_id => '1',
         strict => '1',
     },
+);
+
+$rule{3} = $rule_rs->create(
     {
         rules_id =>'3',
-        name => 'class'
+        name => 'class',
         title => 'Result Class Dependency',
         description => 'This master rule begins a result class dependency',
         strict => '1',
     },
+);
+$rule{4} = $rule_rs->create(
     {
         rules_id =>'4',
         name => 'Destination United States UPS Ground Shipping',
         description => 'This rule makes ShipmentDestination US with Shipping Method UPS Ground a relationship',
-        canonical_rules_id => '3'
+        canonical_rules_id => '3',
         strict => '1',
     },
+);
+$rule{5} = $rule_rs->create(
     {
         rules_id =>'5',
         name => 'operator',
@@ -70,14 +81,18 @@ $rule{specs} = $schema->resultset("Rule")->create(
         description => 'This mater rule begins an operator.',
         strict => '1',
     },
+);
+$rule{6} = $rule_rs->create(
     {
         rules_id =>'6',
         name => '>=',
         title => 'Greater than or equal $50.00',
         description => 'This operator checks for a numeric value greater than or equal to another value',
-        canonical_rules_id => '5'
+        canonical_rules_id => '5',
         strict => '1',
     },
+);
+$rule{7} = $rule_rs->create(
     {
         rules_id =>'7',
         name => 'type',
@@ -85,43 +100,48 @@ $rule{specs} = $schema->resultset("Rule")->create(
         description => 'This master role Type is a required in RoleLine .',
         strict => '1',
     },
+);
+
+$rule{8} = $rule_rs->create(
     {
         rules_id =>'8',
         name => 'Cart : Shipping value rule',
         description => 'This  value',
-        canonical_rules_id => '7'
+        canonical_rules_id => '7',
         strict => '1',
     },
 );
-# Action: Action is required this part of the rule gives 
 
-# action discount 100 %
-$rule{specs}->id{2}->add_attribute({ name => 'action'}, 'discount');
-$rule{specs}->id{2}->add_attribute({ name => 'action_type'}, 'percentage');
-$rule{specs}->id{2}->add_attribute({ name => 'value'}, '100');
+# Action: Action is required 
 
-# Operator: Operator is dependent on the Action is also required
+# action discount 100%
+
+$rule{2}->add_attribute({ name => 'action'}, 'discount');
+$rule{2}->add_attribute({ name => 'action_type'}, 'percentage');
+$rule{2}->add_attribute({ name => 'value'}, '100');
+
+# Operator: Operator extends the Action and is also required
 
 # operator greater than or equal 50.00
-$rule{specs}->id{6}->add_attribute({ name => 'operator'}, '>='});
-$rule{specs}->id{6}->add_attribute({ name => 'value'}, 50.00});
+$rule{6}->add_attribute({ name => 'operator'}, '>=');
+$rule{6}->add_attribute({ name => 'value'}, 50.00);
 
 # Class: Adding a class to a rule gives access to additional data
 
 # class ShipmentDestination primary key 1 US
-$rule{specs}->id{4}->add_attribute({ name => 'base_class'}, 'ShipmentDestination');
-$rule{specs}->id{4}->add_attribute({ name => 'field'}, 'id');
+$rule{4}->add_attribute({ name => 'base_class'}, 'ShipmentDestination');
+$rule{4}->add_attribute({ name => 'field'}, 'id');
 
-# Type: The type binds the rule to a class that it make changes to
+# Type: The type binds the rule to a result class that it make changes to
 # as well as the field that will be adjusted
 
 # cart rule with field focus on shipping
-$rule{specs}->id{8}->add_attribute({ name => 'rule_type'}, 'Cart');
-$rule{specs}->id{8}->add_attribute({ name => 'field'}, 'shipping');
+$rule{8}->add_attribute({ name => 'rule_type'}, 'Cart');
+$rule{8}->add_attribute({ name => 'field'}, 'shipping');
 
 # shipping rule group
 $cart{rule} = $schema->resultset("RuleGroup")->create(
-{ name => 'UPSFUS50', title => 'Free Domestic UPS Ground Shipping Over $50', valid_from => $now
+{ name => 'UPSFUS50', title => 'Free Domestic UPS Ground Shipping Over $50', valid_from => $now,
     RuleGroupLines => [
         {
             rules_id => '2',
