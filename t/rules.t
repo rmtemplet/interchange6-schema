@@ -132,7 +132,7 @@ $rule{8}->add_attribute({ name => 'field'}, 'shipping');
 # shipping rule group
 $cart{rule} = $schema->resultset("RuleGroup")->create(
 { name => 'UPSFUS50', title => 'Free Domestic UPS Ground Shipping Over $50', valid_from => $now,
-    RuleGroupLines => [
+    RuleGroupline => [
         {
             rules_id => '2',
         },
