@@ -112,30 +112,20 @@ $rule{8} = $rule_rs->create(
     },
 );
 
-# Action: Action is required 
-
-# action discount 100%
-
+# Action: discount 100%
 $rule{2}->add_attribute({ name => 'action'}, 'discount');
 $rule{2}->add_attribute({ name => 'action_type'}, 'percentage');
 $rule{2}->add_attribute({ name => 'value'}, '100');
 
-# Operator: Operator extends the Action and is also required
-
-# operator greater than or equal 50.00
+# Condition: Greater than or equal 50.00
 $rule{6}->add_attribute({ name => 'operator'}, '>=');
 $rule{6}->add_attribute({ name => 'value'}, 50.00);
 
-# Class: Adding a class to a rule gives access to additional data
-
-# class ShipmentDestination primary key 1 US
+# Result: Result class ShipmentDestination primary key 1 US
 $rule{4}->add_attribute({ name => 'base_class'}, 'ShipmentDestination');
 $rule{4}->add_attribute({ name => 'field'}, 'id');
 
-# Type: The type binds the rule to a result class that it make changes to
-# as well as the field that will be adjusted
-
-# cart rule with field focus on shipping
+# Object: Cart object with field focus on shipping
 $rule{8}->add_attribute({ name => 'rule_type'}, 'Cart');
 $rule{8}->add_attribute({ name => 'field'}, 'shipping');
 
