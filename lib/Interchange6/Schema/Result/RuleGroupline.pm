@@ -1,9 +1,9 @@
 use utf8;
-package Interchange6::Schema::Result::RuleGroupLine;
+package Interchange6::Schema::Result::RuleGroupline;
 
 =head1 NAME
 
-Interchange6::Schema::Result::RuleGroupLine
+Interchange6::Schema::Result::RuleGroupline
 
 =cut
 
@@ -12,15 +12,21 @@ use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<rule_group_lines>
+=head1 TABLE: C<rule_grouplines>
 
 =cut
 
-__PACKAGE__->table("rule_group_lines");
+__PACKAGE__->table("rule_grouplines");
 
 =head1 ACCESSORS
 
-=head2 rule_group_lines_id
+=head2 rule_grouplines_id
+
+  data_type: 'integer'
+  is_auto_increment: 1
+  is_nullable: 0
+
+=head2 rule_groups_id
 
   data_type: 'integer'
   is_foreign_key: 1
@@ -35,7 +41,13 @@ __PACKAGE__->table("rule_group_lines");
 =cut
 
 __PACKAGE__->add_columns(
-  "rule_group_lines_id",
+  "rule_grouplines_id",
+  {
+    data_type => "integer",
+    is_auto_increment => 1,
+    is_nullable => 0,
+  },
+  "rule_groups_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "rules_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
@@ -51,7 +63,7 @@ __PACKAGE__->add_columns(
 
 =cut
 
-__PACKAGE__->set_primary_key("rule_group_lines_id");
+__PACKAGE__->set_primary_key("rule_grouplines_id");
 
 =head1 RELATIONS
 
@@ -67,6 +79,21 @@ __PACKAGE__->belongs_to(
   "Rule",
   "Interchange6::Schema::Result::Rule",
   { rules_id => "rules_id" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+);
+
+=head2 RuleGroup
+
+Type: belongs_to
+
+Related object: L<Interchange6::Schema::Result::RuleGroup>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "RuleGroup",
+  "Interchange6::Schema::Result::RuleGroup",
+  { rule_groups_id => "rule_groups_id" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
