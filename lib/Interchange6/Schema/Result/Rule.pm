@@ -10,7 +10,7 @@ Interchange6::Schema::Result::Rule;
 use strict;
 use warnings;
 
-use base 'DBIx::Class::Core';
+use base qw(DBIx::Class::Core Interchange6::Schema::Base::Attribute);
 
 __PACKAGE__->load_components(qw(InflateColumn::DateTime TimeStamp));
 
@@ -23,6 +23,37 @@ __PACKAGE__->table("rules");
 =head1 DESCRIPTION
 
 The rules table contains parameters for various rule types. 
+
+Rules are broken into 4 parts.
+
+=over
+
+=item *
+
+B<Object> The rule object defines the object that it will effect. An example of a rule object
+is Cart.
+
+=item *
+
+B<Action> The action of the rule designates what resulting action the rule will perform.
+An example of an action is a discount.  The action is dependent on the critera of
+the condition (see below).
+
+=item *
+
+B<Condition> The condition which is required gives the action a critera to be met before
+the action can be made.  A full condition might look like this.
+
+# Condition greater than or equal 50.00
+$myrule->add_attribute({ name => 'condition'}, '>=');
+$myrule->add_attribute({ name => 'value'}, 50.00);
+
+=item *
+
+B<Result> Adding a result class to a rule allows the data from that class to be used for
+defining the rule.
+
+=back
 
 =cut
 
