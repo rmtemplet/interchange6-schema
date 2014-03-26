@@ -35,6 +35,13 @@ __PACKAGE__->table("rule_groups");
   is_nullable: 0
   size: 255
 
+=head2 title
+
+  data_type: 'varchar'
+  default_value: (empty string)
+  is_nullable: 0
+  size: 255
+
 =head2 valid_from
 
   data_type: 'date'
@@ -82,6 +89,8 @@ __PACKAGE__->add_columns(
   },
   "name",
   { data_type => "varchar", default_value => "", is_nullable => 0, size => 255 },
+  "title",
+  { data_type => "varchar", default_value => "", is_nullable => 0, size => 255 },
   "valid_from",
   { data_type => "date", set_on_create => 1, is_nullable => 0 },
   "valid_to",
@@ -105,6 +114,23 @@ __PACKAGE__->add_columns(
 =cut
 
 __PACKAGE__->set_primary_key("rule_groups_id");
+
+=head1 RELATIONS
+
+=head2 RuleGroupline
+
+Type: has_many
+
+Related object: L<Interchange6::Schema::Result::RuleGroupline>
+
+=cut
+
+__PACKAGE__->has_many(
+  "RuleGroupline",
+  "Interchange6::Schema::Result::RuleGroupline",
+  { "foreign.rule_groups_id" => "self.rule_groups_id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
 
 1;
 
