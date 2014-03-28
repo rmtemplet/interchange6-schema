@@ -177,30 +177,51 @@ __PACKAGE__->set_primary_key("rules_id");
 
 =head1 METHODS
 
-=head2 test_condition
+=head2 find_rule_components
 
-This method tests the object using the condition and triggers an action
-if it is.
+If you input rule_group_id this method will return a hash which
+has all of the components of the rule.
 
 =cut
 
-sub validate_condition {
-    my ($self, $object, $condition) = @_;
-    #the object input is the RuleGroupLine_id defined as the opject
+sub find_rule_components {
+    my ($self, $rule_group_id) = @_;
 
-    # search the object for the requires attributes (name, field, value) and make sure they have values.
+    my $rule_groupline_rs =  $self->result_source->schema->resultset('Rule')->search_related('RuleGroupline',
+                                                                        { rule_groups_id => $rule_group_id }
+                                                                                            );
 
-    # the name attribute must be a result class test that is true
+    my %rule_component;
 
-    # we need a method to test that a field exists in the designated class
-
-    # we should get the definition of this field so we can give error if a rule for math is applied to a char etc
-
-    # finally we compare the value of the defined Object field with the condition value using the condition operator
-
-    # if it passes all this then we return ok to apply action if not we do no action.
-
+    while (my $rule_groupline = $rule_groupline_rs->next) {
+        my $rule_rs = $rule_groupline->search_related('Rule');
+        while (my $rule = $rule_rs->next) {
+            my $canonical_rs =  $rule->search_related('canonical');
+            while (my $canonical = $canonical_rs->next) {
+                my $rule_attribute_rs = $rule_groupline->search_related('RuleAttribute');
+                while (my $rule_attribute = $rule_attribute_rs->next) {
+                   my $attribute_rs = $rule_attribute->search_related('Attribute');
+                   while (my $attribute = $attribute_rs->next) {
+                        my $attr_name = $attribute->name;
+                        my $attr_priority = $attribute->priority;
+                        my $attribute_value = $rule->find_attribute_value({name => $attr_name, priority => $attr_priority}, {object => 1});
+                        $rule_component{$attr_priority}{$canonical->name}{$attr_name} =  $attribute_value->value;
+                        
+                   }
+               }
+           }
+        }
+    }
+    return \%rule_component;
 }
+
+    #TODO
+    # search the object for the requires attributes (name, field, value) and make sure they have values.
+    # the name attribute must be a result class test that is true
+    # we need a method to test that a field exists in the designated class
+    # we should get the definition of this field so we can give error if a rule for math is applied to a char etc
+    # finally we compare the value of the defined Object field with the condition value using the condition operator
+    # if it passes all this then we return ok to apply action if not we do no action.
 
 =head2 validate_action
 
@@ -276,7 +297,5 @@ __PACKAGE__->has_many(
   { "foreign.rules_id" => "self.rules_id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
-
-1;
 
 1;
