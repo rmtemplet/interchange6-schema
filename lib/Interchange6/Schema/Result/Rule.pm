@@ -62,13 +62,21 @@ the action can be made.
 
 Condition requires the following attributes (operator, type, value or if type = date either a valid_from and or valid_to date .
 
-operator: valid operator values are greater_than_equals_to, less_than_equals_to, greater_than, less_than, equals, between, like
-type: valid types are numeric, date, char, 
+type: valid types are numeric, date, char, result
+operator: valid operator values are greater_than_equals_to, less_than_equals_to, greater_than, less_than, equals, between, like, exist
+response: The responce dictates the condition's response if the condition is met.  Valid values true:false
 
-# Condition greater than or equal numeric value 50.00
-$myrule->add_attribute({ name => 'operator'}, 'greater_than_equal_to');
+# A condition the depends on result
+$myrule->add_attribute({ name => 'type', priority => '1'}, 'result');
+$myrule->add_attribute({ name => 'operator', priority => '1'}, 'exists');
+$myrule->add_attribute({ name => 'value', priority => '1'}, $priority); # this would be the priority of the result rule in this case 1
+$myrule->add_attribute({ name => 'response', priority => '1'}, true);
+
+# Numeric Condition with true value greater than or equal numeric value 50.00
 $myrule->add_attribute({ name => 'type'}, 'numeric');
+$myrule->add_attribute({ name => 'operator'}, 'greater_than_equal_to');
 $myrule->add_attribute({ name => 'value'}, 50.00);
+$myrule->add_attribute({ name => 'response'}, true);
 
 =item *
 
@@ -80,11 +88,18 @@ A result requires the following attributes (name, field, value).
 name: Valid name is any result class in the Schema
 field: Valid field is any field that is valid in result class
 value: Valid value is reference to a record in the 
+input: Input is required if using a method.
+
+# Result: Using a method to populate a result $class->method($args);
+$myrule->add_attribute({ name => 'name', priority => '1'}, 'TaxZone');
+$myrule->add_attribute({ name => 'method', priority => '1'}, 'has_country');
+$myrule->add_attribute({ name => 'input', priority => '1'}, '$args->{supplier_country}');
 
 # Result: Result class ShipmentDestination primary key
-$myrule->add_attribute({ name => 'name'}, 'ShipmentDestination');
-$myrule->add_attribute({ name => 'field'}, 'id');
-$myrule->add_attribute({ name => 'value'}, '1');
+$myrule->add_attribute({ name => 'name', priority => '2'}, 'ShipmentDestination');
+$myrule->add_attribute({ name => 'field', priority => '2'}, 'id');
+$myrule->add_attribute({ name => 'value', priority => '2'}, '1');
+
 
 =back
 
