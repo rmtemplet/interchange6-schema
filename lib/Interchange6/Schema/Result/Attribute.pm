@@ -129,5 +129,34 @@ __PACKAGE__->has_many(
   { "foreign.attributes_id" => "self.attributes_id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
+=head2 UserAttribute
+
+Type: has_many
+
+Related object: L<Interchange6::Schema::Result::UserAttribute>
+
+=cut
+
+__PACKAGE__->has_many(
+  "UserAttribute",
+  "Interchange6::Schema::Result::UserAttribute",
+  { "foreign.attributes_id" => "self.attributes_id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 RuleAttribute
+
+Type: has_many
+
+Related object: L<Interchange6::Schema::Result::RuleAttribute>
+
+=cut
+
+__PACKAGE__->has_many(
+  "RuleAttribute",
+  "Interchange6::Schema::Result::RuleAttribute",
+  { "foreign.attributes_id" => "self.attributes_id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
 
 1;
