@@ -97,4 +97,19 @@ __PACKAGE__->belongs_to(
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
+=head2 RuleAttribute
+
+Type: has_many
+
+Related object: L<Interchange6::Schema::Result::RuleAttribute>
+
+=cut
+
+__PACKAGE__->has_many(
+  "RuleAttribute",
+  "Interchange6::Schema::Result::RuleAttribute",
+  { "foreign.rules_id" => "self.rules_id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 1;
